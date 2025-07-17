@@ -1,3 +1,4 @@
+import os
 import requests
 import json
 from datetime import datetime
@@ -8,6 +9,8 @@ API_KEY = 'a86133a2e6ca476cb12a1c3021ed5f60'
 # 검색할 키워드
 query = 'Samsung'
 
+sources = 'cnn'
+
 # API 요청 URL 및 파라미터
 url = 'https://newsapi.org/v2/everything'
 params = {
@@ -15,22 +18,27 @@ params = {
     'language': 'en',              # 한국어 기사만
     'sortBy': 'publishedAt',       # 최근 기사부터 정렬
     'pageSize': 10,                # 최대 10개 기사 가져오기
-    'sources': 'cnn',       # 조선일보 도메인으로 필터링
+    'sources': sources,       # 조선일보 도메인으로 필터링
     'apiKey': API_KEY              # 본인의 API 키
 }
 
 # 요청 보내기
 response = requests.get(url, params=params)
 
+#저장 폴더 위치
+folder_path = r'E:\아들\News_API\articles'
+
 # 결과 확인
 if response.status_code == 200:
     data = response.json()
     articles = data['articles']
 
+
     # 날짜와 키워드 포함된 파일명 생성
     today = datetime.now().strftime('%Y%m%d')
     keyword_safe = query.replace(" ", "_")
-    filename = f"news_{keyword_safe}_{today}_chosun.json"  # 파일명에 언론사명 추가
+    sources_safe = sources.replace(',', '_').replace('.', '_')
+    filename = os.path.join(folder_path, f"news_{keyword_safe}_{today}_{sources_safe}.json")  # 파일명에 언론사명 추가
 
     # JSON 파일 저장
     with open(filename, 'w', encoding='utf-8') as f:
