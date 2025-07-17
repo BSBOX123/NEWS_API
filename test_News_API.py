@@ -2,6 +2,7 @@ import requests
 import json
 from datetime import datetime
 
+
 # 발급받은 News API 키 입력
 API_KEY = 'a86133a2e6ca476cb12a1c3021ed5f60'
 
