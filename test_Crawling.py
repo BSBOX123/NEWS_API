@@ -7,7 +7,7 @@ from datetime import datetime
 API_KEY = 'a86133a2e6ca476cb12a1c3021ed5f60'
 
 # 검색할 키워드
-query = 'Samsung'
+query = 'apple'
 
 # 특정 언론사
 sources = 'cnn'
