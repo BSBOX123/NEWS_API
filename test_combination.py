@@ -121,7 +121,7 @@ def main():
     sources = 'cnn'
     sort = 'publishedAt'
     page_size = 10
-    folder_path = r'E:\아들\News_API\articles'
+    folder_path = 
 
     try:
         articles = fetch_articles(query, language, sources, sort, page_size)
