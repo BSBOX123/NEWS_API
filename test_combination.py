@@ -7,8 +7,8 @@ import google.generativeai as genai
 from google.oauth2 import service_account
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-API_KEY = 'a86133a2e6ca476cb12a1c3021ed5f60'  # API 키
-key_path = r"E:\아들\News_API\news-summarize-466413-caa1714fa7c5.json"
+API_KEY = 
+key_path = 
 
 credentials = service_account.Credentials.from_service_account_file(key_path)
 model = genai.GenerativeModel(model_name="gemini-1.5-pro")
