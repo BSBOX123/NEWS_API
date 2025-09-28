@@ -14,30 +14,27 @@ def crawl_article_text(url):
         soup = BeautifulSoup(page.text, 'html.parser')
 
         # 한국 주요 언론사들의 기사 본문 영역에 대한 CSS 선택자 리스트
-        # 우선순위 순서대로 시도합니다.
         selectors = [
-            'article',                   # 연합뉴스, 시사저널 등 (HTML5 시맨틱 태그)
-            'div#article-body',          # 다수 언론사
-            'div#article_body',          # 중앙일보 등
-            'div.article_body',          # 다수 언론사
-            'div.article-veiw-body',     # 스포츠서울 등
-            'div#newsct_article',        # 네이버 뉴스
-            'div.text',                  # 한겨레
-            'div.story-news'             # 연합뉴스 (다른 구조)
+            'article',
+            'div#article-body',
+            'div#article_body',
+            'div.article_body',
+            'div.article-veiw-body',
+            'div#newsct_article',
+            'div.text',
+            'div.story-news'
         ]
         
         content_body = None
         for selector in selectors:
             content_body = soup.select_one(selector)
             if content_body:
-                break # 본문 영역을 찾으면 반복 중단
+                break
         
-        # 선택자로 본문을 찾지 못한 경우, <p> 태그 전체를 대상으로 시도
         if not content_body:
             paragraphs = soup.find_all('p')
             text = ' '.join([p.get_text(strip=True) for p in paragraphs])
         else:
-            # 찾은 본문 영역 내의 텍스트만 추출
             text = content_body.get_text(strip=True, separator=' ')
 
         return text if text else '[본문 없음]'
