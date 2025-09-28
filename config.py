@@ -14,7 +14,7 @@ SORT_BY = 'publishedAt' # 정렬 기준: 최신순
 PAGE_SIZE = 20 # 가져올 기사 수
 
 # File Paths
-SAVE_FOLDER_PATH = r'E:\아들\News_API\articles'
+SAVE_FOLDER_PATH = r''
 
 # Concurrency
 MAX_WORKERS = 5
