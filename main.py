@@ -8,7 +8,7 @@ from crawler import crawl_article_text
 from file_saver import save_articles_to_csv
 
 def process_article(article):
-    """하나의 진짜 기사로 '진짜'와 '가짜' 데이터 쌍(2개)을 생성합니다."""
+    "하나의 진짜 기사로 '진짜'와 '가짜' 데이터 쌍(2개) 생성"
     url = article.get('url', '')
     original_title = article.get('title', '')
     source_name = article.get('source', {}).get('name', '')

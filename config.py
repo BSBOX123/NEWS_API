@@ -1,8 +1,8 @@
 # config.py
 
 # API Keys
-NEWS_API_KEY = ''  # 본인의 News API 키를 입력하세요.
-GEMINI_API_KEY = '' # Google AI Studio에서 발급받은 키를 입력하세요.
+NEWS_API_KEY = ''  # News API 키 입력.
+GEMINI_API_KEY = '' # Google AI Studio키 입력.
 
 # News API Parameters
 QUERY = '정부 OR 경제 OR 사회 OR IT OR 과학 OR 문화'

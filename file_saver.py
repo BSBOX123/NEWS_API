@@ -6,7 +6,7 @@ import csv
 from datetime import datetime
 
 def save_articles_to_csv(processed_articles, query, folder_path):
-    """처리된 기사 리스트를 CSV 파일로 저장합니다."""
+    "기사 csv 저장"
     if not processed_articles:
         print("저장할 기사가 없습니다.")
         return

@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 
 def crawl_article_text(url):
-    """URL을 받아 기사 본문을 크롤링합니다. (한국 언론사 환경에 맞게 개선)"""
+    "URL을 통해 뉴스 기사 크롤링 "
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
