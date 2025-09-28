@@ -13,3 +13,9 @@
 
 <패치 내용> - 구현한 기능 날짜와 함께 간단히 기입
 
+<branch>
+-develop
+  .GCP버젼 API사용
+-feature/API_student
+  .학생 플랜 사용 API버젼
+
