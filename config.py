@@ -13,3 +13,5 @@ PAGE_SIZE = 5
 
 # File Paths
 SAVE_FOLDER_PATH = r'' # 저장할 폴더 경로
+
+BATCH_SIZE = 30  # 한 번에 처리할 기사 수

@@ -1,4 +1,5 @@
 # file_saver.py
+# file_saver.py
 
 import os
 import csv
@@ -12,11 +13,10 @@ def save_articles_to_csv(processed_articles, query, folder_path):
 
     os.makedirs(folder_path, exist_ok=True)
     today = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-    
-    filename = os.path.join(folder_path, f"news_{today}.csv")
+    filename = os.path.join(folder_path, f"dataset_{today}.csv")
 
-    # CSV 헤더를 새로운 기능에 맞게 수정
-    fieldnames = ['번호', '제목', '출처', 'URL', '게시일', '본문', '진위여부(1:진짜, 0:가짜)', '생성된_가짜뉴스']
+    # 데이터셋에 맞는 헤더로 변경
+    fieldnames = ['번호', '제목', '출처', 'URL', '게시일', '기사본문', '진위여부(1:진짜, 0:가짜)']
 
     with open(filename, 'w', encoding='utf-8-sig', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -29,9 +29,8 @@ def save_articles_to_csv(processed_articles, query, folder_path):
                 '출처': article['source'],
                 'URL': article['url'],
                 '게시일': article['publishedAt'],
-                '본문': article['text'],
-                '진위여부(1:진짜, 0:가짜)': article['is_real'],
-                '생성된_가짜뉴스': article['generated_fake_news']
+                '기사본문': article['text'],
+                '진위여부(1:진짜, 0:가짜)': article['label']
             })
             
-    print(f"\n총 {len(processed_articles)}개 기사 저장 완료: {filename}")
+    print(f"\n총 {len(processed_articles)}개 데이터 저장 완료: {filename}")

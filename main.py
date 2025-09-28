@@ -3,42 +3,53 @@
 import time
 import config
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from api_handler import fetch_articles, analyze_and_generate_fake_news 
+from api_handler import fetch_articles, generate_fake_version 
 from crawler import crawl_article_text
 from file_saver import save_articles_to_csv
 
 def process_article(article):
-    """단일 기사를 크롤링하고, 진위 여부 판별 및 가짜뉴스를 생성합니다."""
+    """하나의 진짜 기사로 '진짜'와 '가짜' 데이터 쌍(2개)을 생성합니다."""
     url = article.get('url', '')
+    original_title = article.get('title', '')
+    source_name = article.get('source', {}).get('name', '')
+    published_at = article.get('publishedAt', '')
+
+    real_text = crawl_article_text(url)
     
-    text = crawl_article_text(url)
-    is_real, generated_fake_news = analyze_and_generate_fake_news(text) 
-    
-    return {
-        'title': article.get('title', ''),
-        'source': article.get('source', {}).get('name', ''),
+    # '진짜' 데이터 레코드 (라벨 1)
+    record_real = {
+        'title': original_title,
+        'source': source_name,
         'url': url,
-        'publishedAt': article.get('publishedAt', ''),
-        'text': text,
-        'is_real': is_real,
-        'generated_fake_news': generated_fake_news
+        'publishedAt': published_at,
+        'text': real_text,
+        'label': 1  # 진짜 뉴스는 1
     }
+
+    # '가짜' 데이터 레코드 생성 (라벨 0)
+    fake_text = generate_fake_version(real_text)
+    record_fake = {
+        'title': "[가짜생성] " + original_title, # 제목으로 구분
+        'source': source_name,
+        'url': url,
+        'publishedAt': published_at,
+        'text': fake_text,
+        'label': 0  # 가짜 뉴스는 0
+    }
+    
+    # 두 개의 레코드를 리스트로 반환
+    return [record_real, record_fake]
 
 def main():
     """메인 실행 함수"""
-    print("뉴스 기사 수집 및 분석을 시작합니다...")
+    print("학습용 뉴스 데이터셋 구축을 시작합니다...")
     try:
         articles = fetch_articles(
-            config.QUERY,
-            config.LANGUAGE,
-            config.SOURCES,
-            config.SORT_BY,
-            config.PAGE_SIZE
+            config.QUERY, config.LANGUAGE, config.SOURCES, config.SORT_BY, config.PAGE_SIZE
         )
-        print(f"총 {len(articles)}개의 기사를 가져왔습니다. 병렬 배치 처리를 시작합니다.")
+        print(f"총 {len(articles)}개의 원본 기사를 가져왔습니다. (데이터 2배 생성 예정)")
 
         processed_articles = []
-        
         batches = [articles[i:i + config.BATCH_SIZE] for i in range(0, len(articles), config.BATCH_SIZE)]
 
         for i, batch in enumerate(batches):
@@ -49,14 +60,14 @@ def main():
                 
                 for future in as_completed(future_to_article):
                     try:
-                        result = future.result()
-                        processed_articles.append(result)
-                        print(f"  - 처리 완료: {result['title'][:30]}...")
+                        # [record_real, record_fake] 리스트를 한 번에 추가
+                        processed_articles.extend(future.result()) 
+                        print(f"  - 진짜/가짜 쌍 처리 완료: {future.result()[0]['title'][:30]}...")
                     except Exception as e:
                         print(f"[Error] 기사 처리 중 예외 발생: {e}")
 
             if i < len(batches) - 1:
-                print(f"--- 배치 {i+1} 처리 완료. API 사용량 제한 초기화를 위해 61초간 대기합니다... ---")
+                print(f"--- 배치 {i+1} 처리 완료. 61초간 대기합니다... ---")
                 time.sleep(61)
 
         processed_articles.sort(key=lambda x: x['publishedAt'], reverse=True)
