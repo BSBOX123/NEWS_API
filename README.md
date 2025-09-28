@@ -13,3 +13,10 @@
 
 <패치 내용> - 구현한 기능 날짜와 함께 간단히 기입
 
+
+-main                  # 메인파일
+-config.py             # API 키, 파일 경로 등 설정 관련 정보 관리
+-api_handler.py        # API 관련 담당
+-crawler.py            # 크롤링 부분
+-file_saver.py         # 파일 저장
+-requirements.txt      # 라이브러리 목록
