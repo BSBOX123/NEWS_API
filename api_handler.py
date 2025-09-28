@@ -2,21 +2,15 @@
 
 import requests
 import google.generativeai as genai
-from google.oauth2 import service_account
-from config import GEMINI_CREDENTIALS_PATH
-
-
+from config import GEMINI_API_KEY # config에서 API 키를 가져오도록 수정
 
 # Gemini 모델 초기화
 try:
-    credentials = service_account.Credentials.from_service_account_file(GEMINI_CREDENTIALS_PATH)
-    genai.configure(credentials=credentials)
-    gemini_model = genai.GenerativeModel(model_name="gemini-pro")
+    genai.configure(api_key=GEMINI_API_KEY)
+    gemini_model = genai.GenerativeModel(model_name="gemini-1.5-pro-001") 
 except Exception as e:
     print(f"[Fatal Error] Gemini 모델 초기화 실패: {e}")
     gemini_model = None
-
-
 
 def fetch_articles(api_key, query, language, sources, sort_by, page_size):
     """News API에서 기사 목록을 가져옵니다."""
@@ -30,10 +24,8 @@ def fetch_articles(api_key, query, language, sources, sort_by, page_size):
         'apiKey': api_key
     }
     response = requests.get(url, params=params)
-    response.raise_for_status()  # 요청 실패 시 예외를 발생시킴 (더 간결하고 표준적인 방법)
+    response.raise_for_status()
     return response.json().get('articles', [])
-
-
 
 def summarize_text_with_gemini(text):
     """Gemini AI를 이용해 텍스트를 요약합니다."""
