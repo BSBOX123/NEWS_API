@@ -1,8 +1,8 @@
 # config.py
 
 # API Keys
-NEWS_API_KEY = 'a86133a2e6ca476cb12a1c3021ed5f60'  # 본인의 News API 키
-GEMINI_CREDENTIALS_PATH = r"E:\아들\News_API\news-summarize-466413-caa1714fa7c5.json" # 본인의 Gemini API 키 경로
+NEWS_API_KEY = ''  # 본인의 News API 키
+GEMINI_CREDENTIALS_PATH =  # 본인의 Gemini API 키 경로
 
 # News API Parameters
 QUERY = '경제'  # 검색할 키워드를 한국어로 변경
